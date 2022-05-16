@@ -1,0 +1,210 @@
+:root {
+    font-size: 0.95em;
+    --green: #008369;
+    --orange: #FF9652;
+    --pink: #FF6978;
+    --iceblue: #64E9EE;
+    --blue: #2f6ac2;
+    --offwhite: #f2f3f4;
+    --purple: #2f2d65;
+    /*filter: invert(1) hue-rotate(180deg);*/
+}
+
+@font-face {
+    font-family: 'Sansation';
+    src: url(Sansation_Bold.ttf);
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Sansation';
+    src: url(Sansation_Italic.ttf);
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Sansation';
+    src: url(Sansation_Regular.ttf);
+}
+@font-face {
+    font-family: 'RussoOne';
+    src: url(RussoOne.ttf);
+}
+* {
+    font-family: 'Sansation', system-ui, sans-serif;
+    /*scroll-behavior: smooth;*/
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/*::selection {*/
+/*}*/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    /*overflow: auto;*/
+    scroll-behavior: smooth;
+}
+
+body {
+    background: url('wave.svg') no-repeat fixed bottom,
+    radial-gradient(circle, hsl(220, 82%, 58%) 0%, hsl(240, 51%, 19%) 100%) no-repeat fixed;
+}
+
+a, a:link, a:visited, a:focus, a:hover, a:active {
+    color: var(--pink);
+    /*text-decoration: none;*/
+    outline: none;
+}
+
+/*internal navigation links*/
+a[href^="#"] {
+    color: var(--orange);
+}
+
+h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+    padding: 0;
+}
+
+p:first-letter {
+    font-weight: bold;
+}
+
+header {
+    /*z-index: 5;*/
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*background-color: #f2f3f4;*/
+    background: var(--offwhite);
+    box-shadow: 0 2px 10px 2px rgba(47,45,101,0.5);
+    height: 3rem;
+    padding: 0 1rem 0 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    display: inline-block;
+    font-family: 'RussoOne', impact, sans-serif;
+    color: var(--offwhite);
+    text-shadow: 1px 1px 1px #000;
+    background-color: var(--blue);
+    padding: 0 1rem 0 1rem;
+    font-weight: normal;
+}
+
+header h1 span {
+    font: inherit;
+    color: var(--iceblue);
+}
+
+header #menuButton {
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+header #menuButton:hover {
+    transform: scale(1.1);
+}
+
+@keyframes menuSlideIn {
+    from {right: -20rem;}
+    to {right: 0;}
+}
+
+#menuBackdrop {
+    position: fixed;
+    top: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.2);
+}
+#menu {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    height: 100%;
+    min-width:18rem;
+    background-color: var(--offwhite);
+    box-shadow: 0 0 5px 5px rgba(47,45,101,0.5);
+    animation: menuSlideIn 0.1s;
+}
+#menuHeader {
+    width:100%;
+    height:3rem;
+    background-color: var(--blue);
+    border-bottom:1px solid #000;
+    display:flex;
+    align-items: center;
+}
+#menuClose {
+    padding-left:1rem;
+    cursor: pointer;
+}
+#menuNav h2 {
+    text-align: center;
+}
+#menuNav ul {
+    list-style-type: none;
+    padding:2rem;
+    font-size:1.3rem;
+}
+#menuNav li {
+    padding:1rem;
+    /*transition: 0.3s ease;*/
+    border-bottom: 1px solid black;
+}
+#menuNav li:first-child { /*Home*/
+    background-color: #fff;
+    /*text-align: center;*/
+}
+#menuNav a {
+    color: var(--purple);
+    text-decoration: none;
+}
+main {
+    background-color:var(--offwhite);
+    width:75%;
+    padding:1rem;
+    margin:2% auto;
+    border-radius: 0.3rem;
+    box-shadow: 0 0 5px 5px rgba(47,45,101,0.5)
+}
+
+main section {
+    background-color: #fff;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+footer {
+    /*clear: both;*/
+    position: fixed;
+    bottom: 0;
+    padding:0.5rem;
+}
+
+footer ul {
+    font-size: 0.9rem;
+    list-style-type: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+footer ul li {
+    font-weight: bold;
+    display: inline;
+    background-color: rgba(242,243,244, 0);
+    padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+    margin: 0.2rem;
+}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+{% endblock head %}
+
+{% block content %}
+
+<main>
+
+    <div id="chat">
+
+        <div class="userChat">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, quisquam!!!</div>
+        <div class="robotChat"><a href="https://example.com">Hello</a>, how are you?</div>
+        <div class="userChat">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, vero.</div>
+        <div class="robotChat">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium assumenda autem deleniti dolorum ea eum ex fuga illo illum, itaque, labore laborum maxime minima molestias nesciunt non officia quidem quos ratione repellendus, reprehenderit tempora tempore totam voluptatum. Architecto delectus deserunt eveniet hic illo molestias quas ut veniam voluptates voluptatibus?</div>
+        <div class="userChat">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, vero.</div>
+        <div class="robotChat">Lorem ipsum dolor sit amet.</div>
+        <div class="userChat">Lorem ipsum dolor sit amet.</div>
+        <div class="robotChat">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium assumenda autem deleniti dolorum ea eum ex fuga illo illum, itaque, labore laborum maxime minima molestias nesciunt non officia quidem quos ratione repellendus, reprehenderit tempora tempore totam voluptatum. Architecto delectus deserunt eveniet hic illo molestias quas ut veniam voluptates voluptatibus?</div>
+
+    </div>
+
+
+
+    <div id="chatForm">
+        <form id="form">
+            <label for="user_input"></label>
+            <input type="text" placeholder="Ask me anything!" id="user_input" name="user_input" maxlength="200" autocomplete="off" required>
+            <input type="submit" value="Send!">
+            <input type="button" value="😀">
+        </form>
+    </div>
+    <!--            <span id="count" style="font-size:0.7rem;display:inline-block;text-align: center;width:100%;position:absolute;">200</span>-->
+
+
+</main>
+
+
+<aside>
+
+
+    <section>
+        <h3>Ask Me Anything - Dictionary, Quotes, Jokes, word of the day. have a user be able to suggest that they want to vote on a thing conversationally</h3>
+        <p>
+            Have an official answer to a question (wikipedia? stackoverflow?), then have user suggested/submitted answers too <br><br>
+            aside Lorem <a href="#testing123">kipsum dolor sit amet, consectetur</a> adipisicing elit. Blanditiis dicta distinctio labore quis suscipit. Alias exercitationem expedita maiores optio quaerat. Atque, consequatur corporis excepturi libero obcaecati quos? Accusamus aspernatur, corporis dignissimos doloribus ex facere id illo libero nisi non obcaecati odit quod sed sit voluptatum. Doloribus laborum mollitia pariatur reprehenderit.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, aliquam animi architecto asperiores deleniti dolores dolorum, eaque eligendi expedita fuga fugiat harum magni modi nam neque odio porro quam qui recusandae, rem <a href="">reprehenderit sint ut. Consequuntur</a> fugit officiis quis! Eos ipsum libero, magni minima quasi sint tempora ut voluptatem? Aliquid?
+        </p>
+    </section>
+
+
+    <section>
+        <h3>Ask Me Anything</h3>
+        <input type="range">
+        harum magni modi nam neque odio porro quam qui recusandae, rem reprehenderit sint ut. Consequuntur fugit officiis quis! Eos ipsum libero, magni minima quasi sint tempora ut voluptatem? Aliquid?
+    </section>
+    <section>
+        <h3>Ask Me Anything</h3>
+        <a href="#">harum magni modi nam</a> neque odio porro quam qui recusandae, rem reprehenderit sint ut. Consequuntur fugit officiis quis! Eos ipsum libero, magni minima quasi sint tempora ut voluptatem? Aliquid?
+    </section>
+</aside>
+
+
+
+
+
+
+
+<script>
+
+    let form = document.getElementById('form');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // document.getElementById('count').textContent = 200;
+
+        let formData = new FormData(form);  // create object with form data to send to server
+
+        let chat = document.getElementById('chat'); // get the chat div so i can append divs to this variable
+
+        let userChat = document.createElement('div');   // Create the userchat div after form submission.
+        userChat.classList.add('userChat'); // Add the class to the element so its styled.
+
+        let userChatText = document.createTextNode(document.getElementById('user_input').value);    // get the text value from input form and create a node
+        userChat.appendChild(userChatText); // add the text node to the userChat div
+
+        index.appendChild(userChat); // add the userchat div (chat bubble) to the chat div
+
+        index.scrollTop = index.scrollHeight;
+        // userChat.scrollIntoView(true);  // make the chat window scroll to this new div
+
+        fetch('/send/', {
+            method: 'post',
+            body: formData
+        })
+            .then(response=>response.text())    // take the response from fetch, and convert it to .json() or .text()
+            .then(text => {  // take json and do stuff - .then(function(json) { -
+
+                let robotChat = document.createElement('div');  // create the bots chat bubble (div)
+                robotChat.classList.add('robotChat');   // add the css to it
+
+                let robotChatText = document.createTextNode(text);  // add the text to the chat from the json response
+                robotChat.appendChild(robotChatText);   // add the text to the robot chat bubble
+
+                index.appendChild(robotChat);    // add the robots chat bubble to the chat window
+
+                index.scrollTop = index.scrollHeight;
+                // robotChat.scrollIntoView({behavior: 'smooth'}); // move the chat window to the new div
+
+            });
+        document.getElementById('user_input').value = "";   // reset the value of the chat form
+    });
+
+    // let input = document.getElementById('user_input');
+    // let span = document.getElementById('count');
+    // let count;
+    //
+    // input.addEventListener('input', counter);
+    // function counter(e) {
+    //     count = 200 - e.target.value.length;
+    //     span.textContent = `${count}`;
+    // }
+
+
+
+</script>
+
+
+
+
+
+
+
+
+{% endblock content %}
