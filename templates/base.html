@@ -29,12 +29,13 @@
             <br>
             <h2>Navigate</h2>
             <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('projects') }}">Projects</a></li>
-                <li><a href="https://github.com/codeflyio/Codefly" target="_blank">GitHub</a></li>
-                <li><a href="{{ url_for('articles') }}">Articles</a></li>
-                <li><a href="{{ url_for('about') }}">About</a></li>
-                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                <li><a href="{{ url_for('index') }}">&#127968; Home</a></li>
+                <li><a href="{{ url_for('projects') }}">&#128187; Projects</a></li>
+                <li><a href="{{ url_for('articles') }}">&#128221; Articles</a></li>
+                <li><a href="{{ url_for('about') }}">&#128214; About</a></li>
+                <li><a href="{{ url_for('contact') }}">&#128231; Contact</a></li>
+                <li><a href="https://github.com/codeflyio/Codefly" target="_blank">
+                    <img alt="Github" src="{{ url_for('static', filename='github.svg') }}"></img>  GitHub</a></li>
             </ul>
         </nav>
     </div>

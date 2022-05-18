@@ -11,34 +11,34 @@ def index():
 
 @app.route('/articles/')
 def articles():
-    return render_template('articles.html', title="Codefly"), 200
+    return render_template('articles.html', title="Codefly - Articles"), 200
 
 
 @app.route('/about/')
 def about():
-    return render_template('about.html', title="Codefly"), 200
+    return render_template('about.html', title="Codefly - About"), 200
 
 
 @app.route('/contact/')
 def contact():
-    return render_template('contact.html', title="Codefly"), 200
+    return render_template('contact.html', title="Codefly - Contact"), 200
 
 
 @app.route('/projects/')
 def projects():
-    return render_template('projects.html', title="Codefly"), 200
+    return render_template('projects.html', title="Codefly - Projects"), 200
 
 
 @app.route('/projects/chat/')
 def chat():
     import bot as bot
     bot.x()
-    return render_template('chat.html', title="Codefly"), 200
+    return render_template('chat.html', title="Codefly - Chatbot!"), 200
 
 
 @app.route('/projects/gw2/', methods=['GET', 'POST'])
 def gw2():
-    return render_template('gw2.html', title="Codefly"), 200
+    return render_template('gw2.html', title="Codefly - Guild Wars 2 Logs"), 200
 
 
 # @app.errorhandler(Exception)
