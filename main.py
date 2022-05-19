@@ -1,7 +1,11 @@
-from flask import Flask, render_template
-
+from flask import Flask, render_template, request
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+import keys
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = keys.app_config_secret_key
 
 
 @app.route('/')
@@ -31,9 +35,23 @@ def projects():
 
 @app.route('/projects/chat/')
 def chat():
-    import bot as bot
+    import bot
     bot.x()
     return render_template('chat.html', title="Codefly - Chatbot!"), 200
+
+
+@app.route('/speak/', methods=['GET', 'POST'])
+def send():
+    import bot as bot
+    bot.x()
+    default_value = "hi"
+    user_input = request.form.get('user_input', default_value)
+    return bot.reply(user_input)
+
+
+class BotForm(FlaskForm):
+    chat = StringField(validators=[DataRequired()])
+    submit = SubmitField('Send!')
 
 
 @app.route('/projects/gw2/', methods=['GET', 'POST'])

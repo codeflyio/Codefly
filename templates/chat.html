@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block head %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+    <script src="{{ url_for('static', filename='chat.js') }}" defer></script>
 {% endblock head %}
 
 {% block content %}
 
-<main>
+<div id="chat_window">
 
     <div id="chat">
 
@@ -33,7 +34,7 @@
     <!--            <span id="count" style="font-size:0.7rem;display:inline-block;text-align: center;width:100%;position:absolute;">200</span>-->
 
 
-</main>
+</div>
 
 
 <aside>
@@ -73,20 +74,17 @@
         e.preventDefault();
 
         // document.getElementById('count').textContent = 200;
-
         let formData = new FormData(form);  // create object with form data to send to server
-
         let chat = document.getElementById('chat'); // get the chat div so i can append divs to this variable
-
         let userChat = document.createElement('div');   // Create the userchat div after form submission.
         userChat.classList.add('userChat'); // Add the class to the element so its styled.
 
         let userChatText = document.createTextNode(document.getElementById('user_input').value);    // get the text value from input form and create a node
         userChat.appendChild(userChatText); // add the text node to the userChat div
 
-        index.appendChild(userChat); // add the userchat div (chat bubble) to the chat div
+        chat.appendChild(userChat); // add the userchat div (chat bubble) to the chat div
 
-        index.scrollTop = index.scrollHeight;
+        chat.scrollTop = chat.scrollHeight;
         // userChat.scrollIntoView(true);  // make the chat window scroll to this new div
 
         fetch('/send/', {
@@ -102,13 +100,14 @@
                 let robotChatText = document.createTextNode(text);  // add the text to the chat from the json response
                 robotChat.appendChild(robotChatText);   // add the text to the robot chat bubble
 
-                index.appendChild(robotChat);    // add the robots chat bubble to the chat window
+                chat.appendChild(robotChat);    // add the robots chat bubble to the chat window
 
-                index.scrollTop = index.scrollHeight;
+                chat.scrollTop = chat.scrollHeight;
                 // robotChat.scrollIntoView({behavior: 'smooth'}); // move the chat window to the new div
 
             });
-        document.getElementById('user_input').value = "";   // reset the value of the chat form
+        {#document.getElementById('user_input').value = "";   // reset the value of the chat form#}
+        form.reset();
     });
 
     // let input = document.getElementById('user_input');
