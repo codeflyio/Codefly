@@ -1,8 +1,11 @@
+import keys
 from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
-import keys
+import pymongo
+# from pymongo import MongoClient
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = keys.app_config_secret_key
@@ -35,23 +38,21 @@ def projects():
 
 @app.route('/projects/chat/')
 def chat():
-    import bot
-    bot.x()
-    return render_template('chat.html', title="Codefly - Chatbot!"), 200
+    form = BotForm()
+    return render_template('chat.html', title="Codefly - Chatbot!", form=form), 200
 
 
-@app.route('/speak/', methods=['GET', 'POST'])
+@app.route('/send/', methods=['GET', 'POST'])
 def send():
-    import bot as bot
-    bot.x()
+    import bot
     default_value = "hi"
-    user_input = request.form.get('user_input', default_value)
-    return bot.reply(user_input)
+    user = request.form.get('send', default_value)
+    return bot.reply(user)
 
 
 class BotForm(FlaskForm):
-    chat = StringField(validators=[DataRequired()])
-    submit = SubmitField('Send!')
+    chat = StringField(validators=[DataRequired()], name="send")
+    submit = SubmitField('Send')
 
 
 @app.route('/projects/gw2/', methods=['GET', 'POST'])
