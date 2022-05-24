@@ -43,7 +43,7 @@ def chat():
 
 
 @app.route('/send/', methods=['GET', 'POST'])
-def send():
+async def send():
     import bot
     default_value = "hi"
     user = request.form.get('send', default_value)

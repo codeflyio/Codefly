@@ -1,5 +1,8 @@
 from random import randint
 import json
+
+import requests
+from flask import request
 from ibm_watson import AssistantV2, AssistantV1, ApiException
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import keys
@@ -12,7 +15,6 @@ assistant.set_service_url(keys.assistant_service_url)
 
 
 def reply(user):
-
     # noinspection PyTypeChecker
     response = assistant.message_stateless(
         assistant_id=keys.assistant_id,
@@ -21,30 +23,60 @@ def reply(user):
             'text': user
         }
     ).get_result()
+
+    try:
+        intent = response['output']['intents'][0]['intent']
+    except Exception as e:  # IndexError
+        intent = None
+
+    try:
+        entity = response['output']['entities'][0]['value']
+    except Exception as e:
+        entity = None
+
+    try:
+        spelling = f'Did you mean: {response["output"]["spelling"]["text"]} ?'
+    except Exception as e:
+        spelling = None
+
+    text = response["output"]["generic"][0]["text"]
+
     # print(json.dumps(response, indent=2))
 
-    return response["output"]["generic"][0]["text"]
+    if intent == "Definition":
+        return definitions(entity)
 
-# responses = {
-#     "0": "It is certain.",
-#     "1": "It is decidedly so.",
-#     "2": "Without a doubt.",
-#     "3": "Yes definitely!",
-#     "4": "You may rely on it.",
-#     "5": "As I see it, yes.",
-#     "6": "Most likely.",
-#     "7": "Outlook good.",
-#     "8": "Yes!",
-#     "9": "Signs point to yes!",
-#     "10": "Reply hazy, try again.",
-#     "11": "Ask again later.",
-#     "12": "Better not tell you now.",
-#     "13": "Cannot predict now.",
-#     "14": "Concentrate and ask again!",
-#     "15": "Don't count on it!",
-#     "16": "My reply is no.",
-#     "17": "My sources say no.",
-#     "18": "Outlook not so good.",
-#     "19": "Very doubtful."
-# }
-# return responses[str(randint(0, 19))]
+    return text
+
+
+def definitions(entity):
+    with open('static/dictionary.json', 'r') as dictionary:
+        data = json.load(dictionary)
+    word = data[entity]
+    return word
+
+
+def eight_ball():
+    response = {
+        "0": "It is certain.",
+        "1": "It is decidedly so.",
+        "2": "Without a doubt.",
+        "3": "Yes definitely!",
+        "4": "You may rely on it.",
+        "5": "As I see it, yes.",
+        "6": "Most likely.",
+        "7": "Outlook good.",
+        "8": "Yes!",
+        "9": "Signs point to yes!",
+        "10": "Reply hazy, try again.",
+        "11": "Ask again later.",
+        "12": "Better not tell you now.",
+        "13": "Cannot predict now.",
+        "14": "Concentrate and ask again!",
+        "15": "Don't count on it!",
+        "16": "My reply is no.",
+        "17": "My sources say no.",
+        "18": "Outlook not so good.",
+        "19": "Very doubtful."
+    }
+    return response[str(randint(0, 19))]
