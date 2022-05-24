@@ -15,6 +15,12 @@ assistant.set_service_url(keys.assistant_service_url)
 
 
 def reply(user):
+
+    if "!8ball".lower() in user:
+        return eight_ball()
+    if "!word" in user:
+        return word_of_the_day()
+
     # noinspection PyTypeChecker
     response = assistant.message_stateless(
         assistant_id=keys.assistant_id,
@@ -26,21 +32,20 @@ def reply(user):
 
     try:
         intent = response['output']['intents'][0]['intent']
-    except Exception as e:  # IndexError
+    except (IndexError, KeyError, Exception) as e:
         intent = None
 
     try:
         entity = response['output']['entities'][0]['value']
-    except Exception as e:
+    except (IndexError, KeyError, Exception) as e:
         entity = None
 
     try:
         spelling = f'Did you mean: {response["output"]["spelling"]["text"]} ?'
-    except Exception as e:
+    except (IndexError, KeyError, Exception) as e:
         spelling = None
 
     text = response["output"]["generic"][0]["text"]
-
     # print(json.dumps(response, indent=2))
 
     if intent == "Definition":
@@ -54,6 +59,12 @@ def definitions(entity):
         data = json.load(dictionary)
     word = data[entity]
     return word
+
+
+def word_of_the_day():
+    data = requests.get(f'https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key={keys.wordnik}').json()
+    result = f"{data['word']}:  {data['definitions'][0]['text']}  https://www.wordnik.com/words/{data['word']}"
+    return result
 
 
 def eight_ball():
