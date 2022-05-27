@@ -25,8 +25,9 @@ form.addEventListener('submit', async (e) => {
             let robotChat = document.createElement('div');  // create the bots chat bubble (div)
             robotChat.classList.add('robotChat');   // add the css to it
 
-            let robotChatText = document.createTextNode(text);  // add the text to the chat from the json response
-            robotChat.appendChild(robotChatText);   // add the text to the robot chat bubble
+            // let robotChatText = document.createTextNode(text);// add the text to the chat from the json response
+            let robotChatText = document.createTextNode(robotChat.innerHTML = text)
+            // robotChat.appendChild(robotChatText);   // add the text to the robot chat bubble
             chat.appendChild(robotChat);    // add the robots chat bubble to the chat window
 
             chat.scrollTop = chat.scrollHeight;

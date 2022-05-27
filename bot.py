@@ -1,6 +1,7 @@
-from random import randint
+import random
+from random import randint, choice
 import json
-
+import re
 import requests
 from flask import request
 from ibm_watson import AssistantV2, AssistantV1, ApiException
@@ -14,12 +15,22 @@ assistant = AssistantV2(
 assistant.set_service_url(keys.assistant_service_url)
 
 
-def reply(user):
+def random_number(numbers):
+    try:
+        nums = re.match(r"!random\s+\d+\s+\d+\s*", numbers).group().split()
+        return str(randint(int(nums[1]), int(nums[2])))
+    except (AttributeError, ValueError, Exception):
+        return None
+
+
+def reply(user):  # main reply function
 
     if "!8ball".lower() in user:
         return eight_ball()
-    if "!word" in user:
+    if "!wod" in user:
         return word_of_the_day()
+    if "!random" in user:
+        return random_number(user)
 
     # noinspection PyTypeChecker
     response = assistant.message_stateless(
@@ -35,35 +46,71 @@ def reply(user):
     except (IndexError, KeyError, Exception) as e:
         intent = None
 
-    try:
+    try:  # it may not recognize the entity, in which case it may need to be added via api
         entity = response['output']['entities'][0]['value']
     except (IndexError, KeyError, Exception) as e:
         entity = None
 
-    try:
+    try:  # suggested word? https://api.datamuse.com/sug?s=philosophy
         spelling = f'Did you mean: {response["output"]["spelling"]["text"]} ?'
     except (IndexError, KeyError, Exception) as e:
         spelling = None
 
-    text = response["output"]["generic"][0]["text"]
-    # print(json.dumps(response, indent=2))
+    try:
+        bot_reply = response["output"]["generic"][0]["text"]
+    except (IndexError, KeyError, Exception) as e:
+        return None
 
     if intent == "Definition":
-        return definitions(entity)
+        return definitions(entity) or bot_reply
 
-    return text
+    return bot_reply
 
 
 def definitions(entity):
-    with open('static/dictionary.json', 'r') as dictionary:
-        data = json.load(dictionary)
-    word = data[entity]
-    return word
+    # requests.exceptions.RequestException
+    def wiki():  # response["type"] == "disambiguation":
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{entity}"
+        header = {'User-Agent': keys.email}
+        try:
+            req = requests.get(url, headers=header).json()
+            response = req['extract']
+        except (KeyError, IndexError, Exception):
+            return None
+        return response
+
+    def dict_api():
+        url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{entity}"
+        try:
+            response = requests.get(url).json()
+            thing = []
+            for words in response[0]['meanings'][0]['definitions']:
+                thing.append(words['definition'] + '<br>')
+            strung = "".join(str(s) for s in thing)
+        except (KeyError, IndexError, Exception):
+            return None
+        return strung
+
+    def dict_file():
+        with open('static/dictionary.json', 'r') as dictionary:
+            data = json.load(dictionary)
+            try:
+                word = data[entity]  # may be a keyError if word isn't in this file 'America' (if, then go to wordnik?)
+            except (KeyError, IndexError, Exception):
+                return None
+        return word
+
+    return wiki() or dict_api() or dict_file()
+    # return random.choice([wiki(), dict_api(), dict_file()])
 
 
 def word_of_the_day():
-    data = requests.get(f'https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key={keys.wordnik}').json()
-    result = f"{data['word']}:  {data['definitions'][0]['text']}  https://www.wordnik.com/words/{data['word']}"
+    try:
+        data = requests.get(f'https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key={keys.wordnik}').json()
+        result = f"<strong>{data['word']}:</strong>  {data['definitions'][0]['text']}\
+                    https://www.wordnik.com/words/{data['word']}"
+    except (KeyError, IndexError, Exception):
+        return None
     return result
 
 

@@ -47,7 +47,8 @@ async def send():
     import bot
     default_value = "hi"
     user = request.form.get('send', default_value)
-    return bot.reply(user)
+    return bot.reply(user) or "I don't understand."
+    # return "x" if bot.reply(user) is None else bot.reply(user)
 
 
 class BotForm(FlaskForm):

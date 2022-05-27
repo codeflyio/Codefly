@@ -25,6 +25,7 @@
     scrollbar-color: #0093E9 #f2f3f4;
     position: relative;
     border:1px solid rgba(0,0,0,0);
+
 }
 
 #chat::-webkit-scrollbar {
@@ -53,7 +54,7 @@
     max-width: 80%;
     margin: 1rem;
     padding: 1rem;
-    text-align: center;
+    /*text-align: center;*/
     color: #fff;
     position: relative;
     float: right;
@@ -72,7 +73,7 @@
     max-width: 80%;
     margin: 1rem;
     padding: 1rem;
-    text-align: center;
+    /*text-align: center;*/
     position: relative;
     float: left;
     clear: both;
