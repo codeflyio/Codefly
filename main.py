@@ -1,10 +1,12 @@
 import keys
 from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, TextAreaField, EmailField, SubmitField
 from wtforms.validators import DataRequired
-import pymongo
+# import pymongo
 # from pymongo import MongoClient
+import smtplib
+from email.message import EmailMessage
 
 
 app = Flask(__name__)
@@ -26,9 +28,44 @@ def about():
     return render_template('about.html', title="Codefly - About"), 200
 
 
-@app.route('/contact/')
+@app.route('/contact/', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html', title="Codefly - Contact"), 200
+    form = ContactForm()
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        subject = request.form.get('subject')
+        message = request.form.get('message')
+
+        body = f"""
+        This message sent by contact form:
+        Name: {name}
+        Email: {email}
+        Subject: {subject}
+        Message: 
+        {message}
+        """
+        msg = EmailMessage()
+        msg['Subject'] = subject
+        msg['From'] = keys.email
+        msg['To'] = keys.email
+        msg.set_content(body)
+
+        server = smtplib.SMTP(keys.email_server, 587)
+        server.starttls()
+        server.login(keys.email, keys.email_pw)
+        server.send_message(msg)
+        server.quit()
+
+    return render_template('contact.html', title="Codefly - Contact", form=form), 200
+
+
+class ContactForm(FlaskForm):
+    name = StringField(validators=[DataRequired()], id="name")
+    email = EmailField(validators=[DataRequired()])  # validator
+    subject = StringField(validators=[DataRequired()])
+    message = TextAreaField(validators=[DataRequired()])
+    submit = SubmitField('Send')
 
 
 @app.route('/projects/')
@@ -47,7 +84,7 @@ async def send():
     import bot
     default_value = "hi"
     user = request.form.get('send', default_value)
-    return bot.reply(user) or "I don't understand."
+    return bot.reply(user) or "Returned None Somewhere."
     # return "x" if bot.reply(user) is None else bot.reply(user)
 
 

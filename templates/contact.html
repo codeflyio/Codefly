@@ -6,6 +6,14 @@
 <main>
     <section>
         <h2 style="text-decoration: underline">Contact</h2>
+        <form action="/contact/" id="form" method="post">
+            {{ form.hidden_tag() }}
+            {{ form.name(placeholder="name", autocomplete="off", maxlength="200", id="name") }}
+            {{ form.email(placeholder="email") }}
+            {{ form.subject(placeholder="subject") }}
+            {{ form.message(placeholder="message") }}
+            {{ form.submit() }}
+        </form>
     </section>
 </main>
 
