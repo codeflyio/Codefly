@@ -135,7 +135,7 @@ header #menuButton:hover {
     height: 100%;
     min-width:18rem;
     background-color: var(--offwhite);
-    box-shadow: 0 0 5px 5px rgba(47,45,101,0.5);
+    box-shadow: 0 0 5px 5px rgba(47,45,101,0.1);
     animation: menuSlideIn 0.1s;
 }
 #menuHeader {
@@ -186,6 +186,7 @@ main section {
     margin: 0.5rem;
     padding: 0.5rem;
     border-radius: 0.3rem;
+    box-shadow: 0 0 5px 5px rgba(47,45,101,0.1);
 }
 
 footer {

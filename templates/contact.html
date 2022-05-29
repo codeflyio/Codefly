@@ -2,20 +2,34 @@
 {% block head %}
 {% endblock head %}
 {% block content %}
-
-<main>
-    <section>
-        <h2 style="text-decoration: underline">Contact</h2>
-        <form action="/contact/" id="form" method="post">
-            {{ form.hidden_tag() }}
-            {{ form.name(placeholder="name", autocomplete="off", maxlength="200", id="name") }}
-            {{ form.email(placeholder="email") }}
-            {{ form.subject(placeholder="subject") }}
-            {{ form.message(placeholder="message") }}
-            {{ form.submit() }}
-        </form>
-    </section>
-</main>
-
-
+    <style>
+        input, textarea {
+            display: block;
+            margin: 1rem;
+            max-width: 75%;
+        }
+    </style>
+    <main>
+        <section>
+            <h2 style="text-decoration: underline">Contact</h2>
+            Send me a message!
+            <form action="/contact/" id="form" method="post">
+                {{ form.hidden_tag() }}
+                {{ form.name(placeholder="Name", autocomplete="off", maxlength="100") }}
+                {{ form.email(placeholder="Email", autocomplete="off", maxlength="100") }}
+                {{ form.subject(placeholder="Subject*", autocomplete="off", maxlength="100") }}
+                {{ form.message(placeholder="Message*", autocomplete="off", maxlength="500", rows="10", cols="35") }}
+                {{ form.submit() }} {{ thanks }}
+            </form>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <p style="background-color: var(--iceblue);width:35%;padding: 0.5rem">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            {% endwith %}
+        </section>
+    </main>
 {% endblock content %}

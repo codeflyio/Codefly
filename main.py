@@ -1,5 +1,7 @@
+import flask
+
 import keys
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, EmailField, SubmitField
 from wtforms.validators import DataRequired
@@ -42,8 +44,7 @@ def contact():
         Name: {name}
         Email: {email}
         Subject: {subject}
-        Message: 
-        {message}
+        Message: {message}
         """
         msg = EmailMessage()
         msg['Subject'] = subject
@@ -57,12 +58,15 @@ def contact():
         server.send_message(msg)
         server.quit()
 
+        flash("Message Sent!")
+        return redirect(url_for('contact'))
+
     return render_template('contact.html', title="Codefly - Contact", form=form), 200
 
 
 class ContactForm(FlaskForm):
-    name = StringField(validators=[DataRequired()], id="name")
-    email = EmailField(validators=[DataRequired()])  # validator
+    name = StringField()
+    email = EmailField()  # validator
     subject = StringField(validators=[DataRequired()])
     message = TextAreaField(validators=[DataRequired()])
     submit = SubmitField('Send')
