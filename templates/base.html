@@ -34,14 +34,15 @@
                 <li><a href="{{ url_for('articles') }}">&#128221; Articles</a></li>
                 <li><a href="{{ url_for('about') }}">&#128214; About</a></li>
                 <li><a href="{{ url_for('contact') }}">&#128231; Contact</a></li>
-                <li><a href="#">&#128077; Acknowledgements</a></li>
-                <li><a href="https://github.com/codeflyio/Codefly" target="_blank">
-                    <img alt="Github" src="{{ url_for('static', filename='github.svg') }}"></img>  GitHub</a></li>
             </ul>
+            <div id="menuFooter">
+                <a href="https://github.com/codeflyio/Codefly" target="_blank">GitHub</a>
+                <a href="{{ url_for('thanks') }}">Thanks</a>
+            </div>
         </nav>
     </div>
 </div>
-{% block content %} {% endblock content %}
+{% block content %}{% endblock content %}
 <footer>
     <ul>
         <li>😎</li>

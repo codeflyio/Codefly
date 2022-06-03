@@ -170,21 +170,19 @@ function create_log_entry(count, date, type, details, description, image) {
         mr_img.src = image;
         m_section.appendChild(mr_img);
     }
-
     container.appendChild(m_section);
-
-    let b_section = document.createElement('section');
-    let bl_span = document.createElement('span');
-    bl_span.textContent = type;
-
 
     let br_details = document.createElement('details');
     let br_pre = document.createElement('pre');
     br_pre.textContent = JSON.stringify(details, null, 2);
     br_details.appendChild(br_pre);
 
-    b_section.appendChild(bl_span);
+    let b_section = document.createElement('section');
+    let bl_span = document.createElement('span');
+    bl_span.textContent = type;
+
     b_section.appendChild(br_details);
+    b_section.appendChild(bl_span);
     container.appendChild(b_section);
 
     return container

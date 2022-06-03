@@ -1,5 +1,3 @@
-import flask
-
 import keys
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
@@ -28,6 +26,11 @@ def articles():
 @app.route('/about/')
 def about():
     return render_template('about.html', title="Codefly - About"), 200
+
+
+@app.route('/thanks/')
+def thanks():
+    return render_template('thanks.html', title="Codefly - Thanks"), 200
 
 
 @app.route('/contact/', methods=['GET', 'POST'])
@@ -114,4 +117,3 @@ def page_not_found(e):
 
 if __name__ == "__main__":
     app.run(debug=True)
-

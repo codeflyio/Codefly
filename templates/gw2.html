@@ -29,18 +29,18 @@
     .ml_span, .mr_span{
         margin: 1rem;
     }
-    details {
+    details, li {
         cursor: pointer;
     }
-    details[open] {
-        cursor: pointer;
-    }
+    {#details[open] {#}
+    {#    cursor: pointer;#}
+    {#}#}
 </style>
 <main id="main">
     <section>
 
     <form id="api_form" method="post">
-        <input type="text" name="api_key" id="api_key" placeholder="Enter your API key here." size="100" required>
+        <input type="text" name="api_key" id="api_key" placeholder="Enter your API key here." maxlength="80" size="80" required>
         <select name="length" id="length" required>
             <option value="" selected></option>
             <option value="25">25</option>
