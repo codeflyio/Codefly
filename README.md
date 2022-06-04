@@ -1,4 +1,4 @@
 # Codefly website
 https://codefly.io
 
-Moved to https://github.com/mscott314 , for now.
+Most new pushes on https://github.com/mscott314 , for now.
